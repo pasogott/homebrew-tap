@@ -1,6 +1,6 @@
 cask "quicksnip" do
-  version "1.0.0"
-  sha256 "01574dae7a95b551ad31c32873bfa3752569b6325b994537f30c680783cc5ead"
+  version "1.0.1"
+  sha256 "ddf1db1151bda8f5aac2c1c496296921f5dc678199a2b0ab0232f3b53f2a6a96"
 
   url "https://github.com/pasogott/quicksnip-menubar-swift/releases/download/v#{version}/QuickSnip.dmg"
   name "QuickSnip"
