@@ -1,0 +1,57 @@
+name: Update frappecli Formula
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Check for updates daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap repository
+        uses: actions/checkout@v4
+
+      - name: Check for new frappecli commits
+        id: check
+        run: |
+          # Get latest commit from frappecli main branch
+          LATEST_COMMIT=$(curl -s https://api.github.com/repos/pasogott/frappecli/commits/main | jq -r '.sha[:7]')
+          echo "latest_commit=$LATEST_COMMIT" >> $GITHUB_OUTPUT
+          
+          # Get current commit from formula
+          CURRENT_COMMIT=$(grep -oP 'HEAD-\K[a-f0-9]{7}' Formula/frappecli.rb || echo "none")
+          echo "current_commit=$CURRENT_COMMIT" >> $GITHUB_OUTPUT
+          
+          if [ "$LATEST_COMMIT" != "$CURRENT_COMMIT" ]; then
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+            echo "New version available: $LATEST_COMMIT (current: $CURRENT_COMMIT)"
+          else
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+            echo "Formula is up to date"
+          fi
+
+      - name: Update formula
+        if: steps.check.outputs.needs_update == 'true'
+        run: |
+          # The formula uses HEAD installation, so it always pulls latest
+          # We just need to bump a comment or version string if needed
+          echo "Formula automatically uses HEAD, no manual update needed"
+
+      - name: Create Pull Request
+        if: steps.check.outputs.needs_update == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(frappecli): update to ${{ steps.check.outputs.latest_commit }}"
+          title: "Update frappecli to ${{ steps.check.outputs.latest_commit }}"
+          body: |
+            Automated update for frappecli formula.
+            
+            New commit: `${{ steps.check.outputs.latest_commit }}`
+            Previous: `${{ steps.check.outputs.current_commit }}`
+            
+            Changes: https://github.com/pasogott/frappecli/compare/${{ steps.check.outputs.current_commit }}...${{ steps.check.outputs.latest_commit }}
+          branch: update-frappecli-${{ steps.check.outputs.latest_commit }}
+          delete-branch: true
