@@ -12,7 +12,9 @@ class Frappecli < Formula
   def install
     # Use uv to create a virtual environment and install the project
     system "uv", "venv", libexec, "--python", Formula["python@3.12"].opt_bin/"python3.12"
-    system libexec/"bin/pip", "install", buildpath
+    
+    # Install the package using uv pip (not regular pip)
+    system "uv", "pip", "install", "--python", libexec/"bin/python", buildpath
     
     # Create wrapper that activates venv
     (bin/"frappecli").write_env_script libexec/"bin/frappecli",
