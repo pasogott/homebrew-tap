@@ -10,6 +10,34 @@ brew tap pasogott/tap
 
 ## Available Formulas
 
+### gurkerlcli
+
+CLI tool for gurkerl.at online grocery shopping (Austria).
+
+```bash
+# Stable release (recommended)
+brew install pasogott/tap/gurkerlcli
+
+# Latest development version
+brew install --HEAD pasogott/tap/gurkerlcli
+```
+
+**Features:**
+- Product search
+- Shopping cart management (add, remove, view)
+- Order history
+- JSON output for scripting
+- Session management with keyring integration
+
+**Requirements:**
+- Python 3.12+
+- uv (installed automatically as dependency)
+- gurkerl.at account
+
+**Documentation:** https://github.com/pasogott/gurkerlcli
+
+---
+
 ### frappecli
 
 CLI tool for managing Frappe/ERPNext instances via REST API.
