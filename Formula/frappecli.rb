@@ -1,8 +1,8 @@
 class Frappecli < Formula
   desc "CLI tool for managing Frappe/ERPNext instances via REST API"
   homepage "https://github.com/pasogott/frappecli"
-  url "https://github.com/pasogott/frappecli/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "7c7cf77c53f8e0432203aae5a5cc26d7ab4b4b6081738e99f3c82294fd02050a"
+  url "https://github.com/pasogott/frappecli/archive/refs/tags/v0.1.1.tar.gz"
+  sha256 "c5e5f6c21e26c6a90d3bd2eaf85d8f7203bbd24b757f944a139047083b4a89bc"
   license "MIT"
 
   # Install from HEAD for latest development version
