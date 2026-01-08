@@ -15,6 +15,10 @@ brew tap pasogott/tap
 CLI tool for managing Frappe/ERPNext instances via REST API.
 
 ```bash
+# Stable release (recommended)
+brew install pasogott/tap/frappecli
+
+# Latest development version
 brew install --HEAD pasogott/tap/frappecli
 ```
 
@@ -61,8 +65,11 @@ brew install --cask pasogott/tap/quicksnip
 # Update tap and upgrade all installed formulas
 brew update && brew upgrade
 
-# Reinstall HEAD formula to get latest version
+# For HEAD installations, reinstall to get latest commit
 brew reinstall --HEAD pasogott/tap/frappecli
+
+# For stable, upgrade will automatically install new releases
+brew upgrade frappecli
 ```
 
 ## Support
