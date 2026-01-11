@@ -1,0 +1,82 @@
+name: Update whcli Formula
+
+on:
+  repository_dispatch:
+    types: [new-release-whcli]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap repository
+        uses: actions/checkout@v4
+
+      - name: Get latest whcli release
+        id: release
+        run: |
+          # Get latest release tag
+          LATEST_TAG=$(curl -s https://api.github.com/repos/pasogott/whcli/releases/latest | jq -r '.tag_name')
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          
+          # Remove 'v' prefix for version number
+          VERSION=${LATEST_TAG#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Get current version from formula
+          CURRENT_VERSION=$(grep -oP 'version "\K[0-9.]+' Formula/whcli.rb || echo "0.0.0")
+          echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          
+          if [ "$VERSION" != "$CURRENT_VERSION" ]; then
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+            echo "New version available: $VERSION (current: $CURRENT_VERSION)"
+          else
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+            echo "Formula is up to date"
+          fi
+
+      - name: Calculate SHA256
+        if: steps.release.outputs.needs_update == 'true'
+        id: sha
+        run: |
+          TAG=${{ steps.release.outputs.latest_tag }}
+          SHA256=$(curl -sL "https://github.com/pasogott/whcli/archive/refs/tags/${TAG}.tar.gz" | shasum -a 256 | cut -d' ' -f1)
+          echo "sha256=$SHA256" >> $GITHUB_OUTPUT
+          echo "SHA256: $SHA256"
+
+      - name: Update formula
+        if: steps.release.outputs.needs_update == 'true'
+        run: |
+          TAG=${{ steps.release.outputs.latest_tag }}
+          VERSION=${{ steps.release.outputs.version }}
+          SHA256=${{ steps.sha.outputs.sha256 }}
+          
+          # Update version and SHA256 in formula
+          sed -i "s|archive/refs/tags/v[0-9.]*\.tar\.gz|archive/refs/tags/${TAG}.tar.gz|g" Formula/whcli.rb
+          sed -i "s|sha256 \"[a-f0-9]*\"|sha256 \"${SHA256}\"|g" Formula/whcli.rb
+          
+          echo "Updated formula to $TAG"
+
+      - name: Create Pull Request
+        if: steps.release.outputs.needs_update == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(whcli): update to ${{ steps.release.outputs.latest_tag }}"
+          title: "Update whcli to ${{ steps.release.outputs.version }}"
+          body: |
+            Automated update for whcli formula.
+            
+            **New version:** `${{ steps.release.outputs.version }}`
+            **Previous:** `${{ steps.release.outputs.current_version }}`
+            **SHA256:** `${{ steps.sha.outputs.sha256 }}`
+            
+            **Release notes:** https://github.com/pasogott/whcli/releases/tag/${{ steps.release.outputs.latest_tag }}
+            
+            **Changes:** https://github.com/pasogott/whcli/compare/v${{ steps.release.outputs.current_version }}...${{ steps.release.outputs.latest_tag }}
+          branch: update-whcli-${{ steps.release.outputs.version }}
+          delete-branch: true
