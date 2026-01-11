@@ -2,7 +2,7 @@ class Whcli < Formula
   desc "CLI for willhaben.at - Austria's largest classifieds marketplace"
   homepage "https://github.com/pasogott/whcli"
   url "https://github.com/pasogott/whcli/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+  sha256 "4547d1723cb8cc3e5107e9e0343a9f6b72af86e973e873c7196431db5b1acc89"
   license "MIT"
 
   # Install from HEAD for latest development version
