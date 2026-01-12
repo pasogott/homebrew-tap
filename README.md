@@ -10,6 +10,33 @@ brew tap pasogott/tap
 
 ## Available Formulas
 
+### firmenbuchat
+
+CLI for the Austrian company register (Firmenbuch).
+
+```bash
+# Stable release (recommended)
+brew install pasogott/tap/firmenbuchat
+
+# Latest development version
+brew install --HEAD pasogott/tap/firmenbuchat
+```
+
+**Features:**
+- Firmenbuchauszug abrufen
+- Firmensuche und Urkundensuche
+- Urkunden herunterladen
+- Veränderungs-Feeds
+- JSON/Tabellen-Ausgabe
+
+**Requirements:**
+- Python 3.12+
+- uv (installed automatically as dependency)
+
+**Documentation:** https://github.com/pasogott/firmenbuch-aip
+
+---
+
 ### gurkerlcli
 
 CLI tool for gurkerl.at online grocery shopping (Austria).
