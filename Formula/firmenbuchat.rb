@@ -1,8 +1,8 @@
 class Firmenbuchat < Formula
   desc "CLI for the Austrian company register (Firmenbuch)"
   homepage "https://github.com/pasogott/firmenbuch-aip"
-  url "https://github.com/pasogott/firmenbuch-aip/archive/refs/tags/v0.2.2.tar.gz"
-  sha256 "9512b25bd3dca6eb0a28e30af7bd2f24c8efb235e374f0a2c78801bca5cf93ce"
+  url "https://github.com/pasogott/firmenbuch-aip/archive/refs/tags/v0.2.3.tar.gz"
+  sha256 "f3457017b8eee70bed9186878d06b8d34f83f74d06ed5bd5acea22f357d4262b"
   license "MIT"
 
   head "https://github.com/pasogott/firmenbuch-aip.git", branch: "main"
