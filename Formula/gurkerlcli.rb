@@ -1,8 +1,8 @@
 class Gurkerlcli < Formula
   desc "CLI for gurkerl.at online grocery shopping (Austria)"
   homepage "https://github.com/pasogott/gurkerlcli"
-  url "https://github.com/pasogott/gurkerlcli/archive/refs/tags/v0.1.4.tar.gz"
-  sha256 "16818bffbb2318258e21cd03dcf08429adacd4ded7a540020d1c264f1abbb3ba"
+  url "https://github.com/pasogott/gurkerlcli/archive/refs/tags/v0.1.5.tar.gz"
+  sha256 "26157fded142e0e82e90849414cffdc5c0287aba6e3a24741b3eb6ec75cb4ff2"
   license "MIT"
 
   # Install from HEAD for latest development version
